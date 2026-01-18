@@ -17,13 +17,11 @@ const LeadDetailsPage = () => {
     useEffect(() => {
         const fetchLead = async () => {
             try {
-                // In a real app we would have a specific endpoint. 
-                // Currently fetching all and finding one (temporary).
-                const { data } = await api.get('/leads');
-                const found = data.find(l => l.id === id);
-                setLead(found);
-                setStatus(found?.status || 'New');
-                setNotes(found?.notes || '');
+                // Fetch specific lead by ID
+                const { data } = await api.get(`/leads/${id}`);
+                setLead(data);
+                setStatus(data?.status || 'New');
+                setNotes(data?.notes || '');
             } catch (error) {
                 console.error("Failed to fetch lead");
             } finally {

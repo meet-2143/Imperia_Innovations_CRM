@@ -24,6 +24,32 @@ const getLeads = async (req, res) => {
     }
 };
 
+// Get Single Lead
+const getLeadById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const db = await readDB();
+        const lead = db.leads.find(l => l.id === id);
+
+        if (!lead) {
+            return res.status(404).json({ message: 'Lead not found' });
+        }
+
+        // Permission check
+        if (req.user.role !== 'admin' && lead.assignedTo !== req.user.id) {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
+
+        // Hydrate AssignedTo Name
+        const assignee = db.users.find(u => u.id === lead.assignedTo);
+        const hydratedLead = { ...lead, assignedToName: assignee ? assignee.name : 'Unassigned' };
+
+        res.json(hydratedLead);
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
 // Create Lead & Auto Assign
 // Create Lead & Auto Assign
 const createLead = async (req, res) => {
@@ -142,4 +168,4 @@ const updateLead = async (req, res) => {
     }
 };
 
-module.exports = { getLeads, createLead, updateLead };
+module.exports = { getLeads, getLeadById, createLead, updateLead };
