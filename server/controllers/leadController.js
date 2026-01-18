@@ -113,9 +113,9 @@ const createLead = async (req, res) => {
     }
 };
 
-const updateLeadStatus = async (req, res) => {
+const updateLead = async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, notes } = req.body;
     try {
         const db = await readDB();
         const leadIndex = db.leads.findIndex(l => l.id === id);
@@ -130,7 +130,10 @@ const updateLeadStatus = async (req, res) => {
             return res.status(403).json({ message: 'Not authorized' });
         }
 
-        db.leads[leadIndex].status = status;
+        // Update fields if provided
+        if (status) db.leads[leadIndex].status = status;
+        if (notes !== undefined) db.leads[leadIndex].notes = notes;
+
         await writeDB(db);
 
         res.json(db.leads[leadIndex]);
@@ -139,4 +142,4 @@ const updateLeadStatus = async (req, res) => {
     }
 };
 
-module.exports = { getLeads, createLead, updateLeadStatus };
+module.exports = { getLeads, createLead, updateLead };

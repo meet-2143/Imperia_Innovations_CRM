@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import { ArrowLeft, Phone, Mail, Building2, MapPin, Package, MessageSquare, History } from 'lucide-react';
 
 const LeadDetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [lead, setLead] = useState(null);
+    const [status, setStatus] = useState('');
+    const [notes, setNotes] = useState('');
     const [loading, setLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         const fetchLead = async () => {
@@ -17,6 +22,8 @@ const LeadDetailsPage = () => {
                 const { data } = await api.get('/leads');
                 const found = data.find(l => l.id === id);
                 setLead(found);
+                setStatus(found?.status || 'New');
+                setNotes(found?.notes || '');
             } catch (error) {
                 console.error("Failed to fetch lead");
             } finally {
@@ -35,6 +42,22 @@ const LeadDetailsPage = () => {
     const getEmail = () => lead.senderEmail || lead.email;
     const getCompany = () => lead.senderCompany || lead.company;
     const getProduct = () => lead.queryProductName || 'N/A';
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            const { data } = await api.put(`/leads/${id}`, { status, notes });
+            setLead(data);
+            alert("Lead updated successfully!");
+        } catch (error) {
+            console.error("Failed to update lead", error);
+            alert("Failed to update lead. Please try again.");
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const isAuthorized = user.role === 'admin' || lead.assignedTo === user.id;
 
     return (
         <div className="max-w-6xl mx-auto pb-12">
@@ -68,9 +91,21 @@ const LeadDetailsPage = () => {
                         <div className="border-t border-slate-50 pt-6 text-left space-y-4">
                             <div>
                                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Status</label>
-                                <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold bg-[#E6E6F2] text-slate-600`}>
-                                    {lead.status}
-                                </span>
+                                <div className="relative">
+                                    <select
+                                        value={status}
+                                        disabled={!isAuthorized}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                        className={`appearance-none w-full px-3 py-1 rounded-full text-xs font-bold bg-[#E6E6F2] text-slate-600 border-none focus:ring-2 focus:ring-[#5932EA] ${!isAuthorized ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
+                                    >
+                                        {['New', 'Contacted', 'Interested', 'Converted', 'Lost'].map(s => (
+                                            <option key={s} value={s}>{s}</option>
+                                        ))}
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+                                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Source</label>
@@ -128,6 +163,33 @@ const LeadDetailsPage = () => {
                                 "{lead.queryMessage || 'No specific message provided.'}"
                             </div>
                         </div>
+
+                        {/* Internal Notes Section */}
+                        <div className="mt-8 pt-8 border-t border-slate-50">
+                            <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center">
+                                <History size={16} className="mr-2 text-slate-400" /> Internal Notes
+                            </h3>
+                            <textarea
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                                disabled={!isAuthorized}
+                                placeholder="Add notes about this lead here..."
+                                className="w-full h-32 p-4 bg-slate-50 rounded-xl text-slate-600 text-sm border border-slate-100 focus:ring-2 focus:ring-[#5932EA] focus:border-transparent outline-none transition-all resize-none disabled:opacity-70"
+                            />
+                        </div>
+
+                        {/* Save Button */}
+                        {isAuthorized && (
+                            <div className="mt-8 flex justify-start">
+                                <button
+                                    onClick={handleSave}
+                                    disabled={isSaving}
+                                    className="px-8 py-3 bg-[#5932EA] text-white rounded-xl font-bold shadow-lg shadow-indigo-100 hover:bg-[#4a29c7] transition-all active:scale-95 disabled:opacity-70 flex items-center"
+                                >
+                                    {isSaving ? 'Saving Changes...' : 'Save Changes'}
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Visiting Card / Image */}

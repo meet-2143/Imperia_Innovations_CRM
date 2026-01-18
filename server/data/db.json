@@ -54,8 +54,9 @@
       "country": "USA",
       "zone": "Zone A",
       "assignedTo": "fdd310d8-5dc3-4dbf-bd56-c76044027f7e",
-      "status": "New",
-      "photoUrl": ""
+      "status": "Contacted",
+      "photoUrl": "",
+      "notes": "testing"
     },
     {
       "id": "273d9ecd-656d-428f-ac49-e973238c8a9a",
@@ -134,9 +135,10 @@
       "enqSource": "IndiaMART",
       "zone": "Zone A",
       "assignedTo": "fdd310d8-5dc3-4dbf-bd56-c76044027f7e",
-      "status": "New",
+      "status": "Interested",
       "createdAt": "2026-01-17T13:04:28.035Z",
-      "photoUrl": ""
+      "photoUrl": "",
+      "notes": "this looks like a potential client"
     },
     {
       "id": "8bb0d843-f5c6-463f-9ee6-c3b33286481c",
@@ -519,6 +521,20 @@
       "date": "2026-01-17",
       "status": "Present",
       "timestamp": "2026-01-17T13:02:10.128Z"
+    },
+    {
+      "id": "4ddd4d70-61ba-4420-af99-140f64ef6e3c",
+      "userId": "65319688-b9bd-4e9a-984e-28c96d18bb87",
+      "date": "2026-01-18",
+      "status": "Present",
+      "timestamp": "2026-01-18T06:34:19.478Z"
+    },
+    {
+      "id": "a57ff723-f0df-4888-8b9e-9638a66fe832",
+      "userId": "fdd310d8-5dc3-4dbf-bd56-c76044027f7e",
+      "date": "2026-01-18",
+      "status": "Present",
+      "timestamp": "2026-01-18T06:35:49.669Z"
     }
   ]
 }

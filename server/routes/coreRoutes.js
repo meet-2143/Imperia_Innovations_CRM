@@ -1,5 +1,5 @@
 const express = require('express');
-const { getLeads, createLead, updateLeadStatus } = require('../controllers/leadController');
+const { getLeads, createLead, updateLead } = require('../controllers/leadController');
 const { addSeller, updateSeller, getSellers } = require('../controllers/adminController');
 const { protect, adminOnly } = require('../utils/authMiddleware');
 
@@ -22,7 +22,7 @@ const router = express.Router();
 // Lead Routes
 router.get('/leads', protect, getLeads);
 router.post('/leads', protect, upload.single('visitingCard'), createLead);
-router.put('/leads/:id/status', protect, updateLeadStatus);
+router.put('/leads/:id', protect, updateLead);
 
 // Admin Routes (Seller Management)
 router.post('/admin/sellers', protect, adminOnly, addSeller);
