@@ -112,9 +112,10 @@
       "enqSource": "Manual",
       "zone": "Zone C",
       "assignedTo": "1701fec6-5617-4634-a68d-2f0ee91bb999",
-      "status": "New",
+      "status": "Converted",
       "createdAt": "2026-01-17T12:42:01.534Z",
-      "photoUrl": ""
+      "photoUrl": "",
+      "notes": "looks good"
     },
     {
       "id": "b8363929-e96c-442c-8ec0-07fbed7b48ad",
@@ -535,6 +536,13 @@
       "date": "2026-01-18",
       "status": "Present",
       "timestamp": "2026-01-18T06:35:49.669Z"
+    },
+    {
+      "id": "e22b3876-2ce8-44af-a8c5-ca820dcbaf76",
+      "userId": "65319688-b9bd-4e9a-984e-28c96d18bb87",
+      "date": "2026-01-19",
+      "status": "Present",
+      "timestamp": "2026-01-19T09:53:45.847Z"
     }
   ]
 }

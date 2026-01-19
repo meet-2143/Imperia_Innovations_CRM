@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, Upload, Save } from 'lucide-react';
+import api from '../api/axios';
 
 const LeadForm = ({ onClose, onSuccess, initialData = null }) => {
     const [formData, setFormData] = useState(initialData || {
@@ -15,7 +16,7 @@ const LeadForm = ({ onClose, onSuccess, initialData = null }) => {
         visitingCard: null
     });
     const [loading, setLoading] = useState(false);
-    const [preview, setPreview] = useState(initialData?.photoUrl ? `http://localhost:5000${initialData.photoUrl}` : null);
+    const [preview, setPreview] = useState(initialData?.photoUrl ? `${api.defaults.baseURL.replace('/api', '')}${initialData.photoUrl}` : null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

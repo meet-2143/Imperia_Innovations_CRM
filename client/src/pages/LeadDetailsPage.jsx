@@ -195,7 +195,7 @@ const LeadDetailsPage = () => {
                         <div className="bg-white rounded-[30px] shadow-sm p-8">
                             <h2 className="text-xl font-bold text-slate-900 mb-6">Visiting Card</h2>
                             <div className="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 p-2">
-                                <img src={`http://localhost:5000${lead.photoUrl}`} alt="Visiting Card" className="w-full h-auto object-contain max-h-96 rounded-xl" />
+                                <img src={`${api.defaults.baseURL.replace('/api', '')}${lead.photoUrl}`} alt="Visiting Card" className="w-full h-auto object-contain max-h-96 rounded-xl" />
                             </div>
                         </div>
                     )}
