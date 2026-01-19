@@ -27,7 +27,7 @@ const getAdminStats = async (req, res) => {
                 id: user ? user.id : record.userId,
                 name: user ? user.name : 'Unknown',
                 role: user ? user.role : 'N/A',
-                checkInTime: new Date(record.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                checkInTime: record.timestamp,
                 status: 'Present'
             };
         });

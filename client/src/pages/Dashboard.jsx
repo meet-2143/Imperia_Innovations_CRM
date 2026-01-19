@@ -154,7 +154,7 @@ const Dashboard = () => {
                                         <tr key={index} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                                             <td className="py-4 px-2 font-medium text-slate-900">{emp.name}</td>
                                             <td className="py-4 px-2 text-slate-500 capitalize">{emp.role}</td>
-                                            <td className="py-4 px-2 text-slate-900">{emp.checkInTime}</td>
+                                            <td className="py-4 px-2 text-slate-900">{new Date(emp.checkInTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                                             <td className="py-4 px-2 text-center">
                                                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">
                                                     Present
